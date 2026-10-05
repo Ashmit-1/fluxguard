@@ -68,4 +68,4 @@ ENV PYTHONUNBUFFERED=1 \
 EXPOSE 8001
 
 # Run with uvicorn (no --reload in production)
-CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "4"]
+CMD ["sh", "-c", "exec uvicorn app.api:app --host 0.0.0.0 --port ${PORT:-8001} --workers 4"]
