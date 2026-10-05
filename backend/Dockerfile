@@ -60,12 +60,12 @@ USER appuser
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Set default environment variables
+# Default environment variables
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    HOST=0.0.0.0 \
-    PORT=8001
+    PYTHONDONTWRITEBYTECODE=1
 
-EXPOSE 8001
+# Expose Cloud Run default port
+EXPOSE 8080
 
-# Run with uvicorn (no --reload in production)
-CMD ["sh", "-c", "exec uvicorn app.api:app --host 0.0.0.0 --port ${PORT:-8001} --workers 4"]
+# Use exec in a shell so uvicorn dynamically binds to $PORT and handles OS signals
+CMD ["sh", "-c", "exec uvicorn app.api:app --host 0.0.0.0 --port ${PORT:-8080} --workers 1"]
