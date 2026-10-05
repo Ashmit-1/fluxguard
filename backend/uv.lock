@@ -74,6 +74,7 @@ dependencies = [
     { name = "python-docx" },
     { name = "python-dotenv" },
     { name = "scikit-learn" },
+    { name = "turso-serverless" },
     { name = "xgboost" },
 ]
 
@@ -95,6 +96,7 @@ requires-dist = [
     { name = "python-docx", specifier = ">=1.0.0" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "scikit-learn", specifier = ">=1.9.0" },
+    { name = "turso-serverless", specifier = ">=0.1.0" },
     { name = "xgboost", specifier = ">=3.0.0" },
 ]
 
@@ -2336,6 +2338,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/57/a9/a2584b8313b89f94869ddb3c4074617a691de1812a614d2d50e32ca5a7a6/traitlets-5.15.1.tar.gz", hash = "sha256:7b1c07854fe25acb39e009bae49f11b79ff6cbb2f27999104e9110e7a6b53722", size = 163344 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/96/8d/1080ee4c231f361b6ce4470d556c8c435b67c7e0753aaa641497ee92f88b/traitlets-5.15.1-py3-none-any.whl", hash = "sha256:770a53705f84b81ac107e83a1b3328ff2dae16094d8fc3cfc004e4b22dfd8e92", size = 85858 },
+]
+
+[[package]]
+name = "turso-serverless"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/d7/81399012ea295f21e9dd8e35b6de5630c4f98be9edaf222de754c5ee2581/turso_serverless-0.1.0.tar.gz", hash = "sha256:36fdcc55b7f88e270a014e418c6220bb9f48da5087469f3dfacc68e56be05509", size = 15547 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3e/c4/f49cec34e7924cabae06da5548153aeb7278f2f73ad995d1435ec98e4b22/turso_serverless-0.1.0-py3-none-any.whl", hash = "sha256:6a45e7f7c66ed5831f940bf40c45c02f1a0021be102bd9abff8e5899fa79c107", size = 12433 },
 ]
 
 [[package]]
