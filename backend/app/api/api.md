@@ -68,6 +68,8 @@ Send a message and optional conversation history, receive the agent's final resp
 | `message` | string | ✅       | The user's question or instruction.        |
 | `history` | array  | ❌       | Prior conversation turns. Omit or pass `[]` for a new conversation. Each item has `role` (`"user"` or `"assistant"`) and `content` (string). |
 
+The backend does not persist chat history. The caller must include prior turns in each request. In the web app, conversations are stored in browser storage via LocalForage (normally IndexedDB); they are not stored in Turso.
+
 ### Response
 
 ```json

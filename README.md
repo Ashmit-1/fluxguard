@@ -675,8 +675,10 @@ The `transactions` table contains:
 | `LLM_MODEL` | No | `gpt-4o` | Model name |
 | `LLM_API_KEY` | Yes | — | API key |
 | `LLM_BASE_URL` | No | — | Custom base URL |
-| `TURSO_DATABASE_URL` | Yes | — | URL of the hosted Turso database |
+| `TURSO_DATABASE_URL` | Yes | — | URL of the hosted Turso database used for authentication data |
 | `TURSO_AUTH_TOKEN` | Yes | — | Authentication token for the Turso database |
+
+Authentication users and sessions are stored in Turso. Transaction analysis still uses an in-memory DuckDB connection over the local SAML-D CSV, and chat history is stored by the web app in browser storage (LocalForage/IndexedDB), not in Turso.
 
 ### Example Configurations
 
