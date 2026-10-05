@@ -288,6 +288,10 @@ nano .env
 **.env Configuration:**
 
 ```bash
+# Turso-hosted auth database
+TURSO_DATABASE_URL=libsql://your-database.turso.io
+TURSO_AUTH_TOKEN=your-turso-auth-token
+
 # For OpenAI
 LLM_PROVIDER=openai
 LLM_MODEL=gpt-4o
@@ -301,6 +305,8 @@ LLM_API_KEY=your-openai-api-key-here
 # Optional: Custom base URL for OpenAI-compatible endpoints
 # LLM_BASE_URL=https://your-endpoint.example.com/v1
 ```
+
+The backend requires both Turso variables and fails to start if either is missing. It no longer uses `backend/auth.db`, and existing local auth records are not migrated automatically.
 
 ### 5. Start the Backend Server
 
@@ -669,6 +675,8 @@ The `transactions` table contains:
 | `LLM_MODEL` | No | `gpt-4o` | Model name |
 | `LLM_API_KEY` | Yes | — | API key |
 | `LLM_BASE_URL` | No | — | Custom base URL |
+| `TURSO_DATABASE_URL` | Yes | — | URL of the hosted Turso database |
+| `TURSO_AUTH_TOKEN` | Yes | — | Authentication token for the Turso database |
 
 ### Example Configurations
 
