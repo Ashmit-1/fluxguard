@@ -63,12 +63,12 @@ def create_session(user_id: int) -> tuple[str, str]:
     expires_at = datetime.now(timezone.utc) + timedelta(days=expiry_days)
     expires_at_str = expires_at.strftime("%Y-%m-%dT%H:%M:%S")
 
-    conn = get_connection()
-    conn.execute(
-        "INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)",
-        (user_id, token, expires_at_str),
-    )
-    conn.commit()
+    with get_connection() as conn:
+        conn.execute(
+            "INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)",
+            (user_id, token, expires_at_str),
+        )
+        conn.commit()
 
     return token, expires_at_str
 
@@ -152,18 +152,18 @@ def validate_session(token: str) -> dict | None:
     Returns ``None`` if the token is invalid, expired, or inactive.
     The returned dict has keys: ``id``, ``username``, ``created_at``.
     """
-    conn = get_connection()
-    row = conn.execute(
-        """
-        SELECT u.id, u.username, u.created_at
-        FROM sessions s
-        JOIN users u ON s.user_id = u.id
-        WHERE s.token = ?
-          AND s.expires_at > datetime('now')
-          AND s.is_active = 1
-        """,
-        (token,),
-    ).fetchone()
+    with get_connection() as conn:
+        row = conn.execute(
+            """
+            SELECT u.id, u.username, u.created_at
+            FROM sessions s
+            JOIN users u ON s.user_id = u.id
+            WHERE s.token = ?
+              AND s.expires_at > datetime('now')
+              AND s.is_active = 1
+            """,
+            (token,),
+        ).fetchone()
 
     if row is None:
         return None

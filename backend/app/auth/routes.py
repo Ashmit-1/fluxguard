@@ -13,9 +13,9 @@ Routes
 from __future__ import annotations
 
 import logging
-import sqlite3
 
 from fastapi import APIRouter, Depends, HTTPException
+import turso_serverless
 
 from app.auth.database import get_connection
 from app.auth.models import (
@@ -54,16 +54,18 @@ def signup(request: SignupRequest) -> SignupResponse:
     username_lower = request.username.strip().lower()
     password_hash = hash_password(request.password)
 
-    conn = get_connection()
     try:
-        cursor = conn.execute(
-            "INSERT INTO users (username, password) VALUES (?, ?)",
-            (username_lower, password_hash),
-        )
-        conn.commit()
-        user_id = cursor.lastrowid
-        logger.info("User created: id=%d username=%s", user_id, username_lower)
-    except sqlite3.IntegrityError:
+        with get_connection() as conn:
+            cursor = conn.execute(
+                "INSERT INTO users (username, password) VALUES (?, ?)",
+                (username_lower, password_hash),
+            )
+            conn.commit()
+            user_id = cursor.lastrowid
+            if user_id is None:
+                raise RuntimeError("Turso did not return the new user ID")
+            logger.info("User created: id=%d username=%s", user_id, username_lower)
+    except turso_serverless.IntegrityError:
         raise HTTPException(
             status_code=409,
             detail="Username already exists",
@@ -93,11 +95,11 @@ def login(request: LoginRequest) -> LoginResponse:
     """
     username_lower = request.username.strip().lower()
 
-    conn = get_connection()
-    row = conn.execute(
-        "SELECT id, username, password FROM users WHERE username = ?",
-        (username_lower,),
-    ).fetchone()
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT id, username, password FROM users WHERE username = ?",
+            (username_lower,),
+        ).fetchone()
 
     if row is None or not verify_password(request.password, row["password"]):
         raise HTTPException(

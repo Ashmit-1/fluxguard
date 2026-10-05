@@ -36,17 +36,14 @@ async def lifespan(app: FastAPI):
     """Application lifespan handler — initialises auth DB, logs events."""
     logger.info("AML Analysis API starting up…")
 
-    # Initialise the auth database (creates tables if needed)
+    # Initialise the Turso auth database (creates tables if needed)
     from app.auth.database import init_auth_db
     init_auth_db()
-    logger.info("Auth database ready.")
+    logger.info("Turso auth database ready.")
 
     yield
 
-    # Shutdown: close auth DB and query engine
-    from app.auth.database import close_auth_db
-    close_auth_db()
-
+    # Shutdown: close the query engine
     from app.tools.tool_definitions import close_engine
     close_engine()
     logger.info("AML Analysis API shut down.")
