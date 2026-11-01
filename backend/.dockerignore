@@ -47,7 +47,8 @@ auth.db
 auth.db-shm
 auth.db-wal
 
-# ── Data files that shouldn't be in the image ──────────────────────────────
+# ── Data files not sent from the build context ─────────────────────────────
+# The dataset is downloaded in the Dockerfile builder stage instead.
 *.json
 !app/data/models/*.pkl
 

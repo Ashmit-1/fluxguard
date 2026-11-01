@@ -6,6 +6,18 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 WORKDIR /app
 
+# Download the dataset into the image; .dockerignore only excludes it from the build context.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl unzip && \
+    mkdir -p /app/app/data && \
+    curl --fail --location --retry 3 \
+        -o /tmp/SAML-D.zip \
+        https://www.kaggle.com/api/v1/datasets/download/berkanoztas/synthetic-transaction-monitoring-dataset-aml && \
+    unzip -p /tmp/SAML-D.zip SAML-D.csv > /app/app/data/SAML-D.csv && \
+    test -s /app/app/data/SAML-D.csv && \
+    rm -f /tmp/SAML-D.zip && \
+    rm -rf /var/lib/apt/lists/*
+
 # Copy dependency files first for layer caching
 COPY pyproject.toml uv.lock ./
 
